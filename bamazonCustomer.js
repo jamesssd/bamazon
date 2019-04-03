@@ -13,11 +13,19 @@ let connection = mysql.createConnection({
 
 connection.connect(function(err){
     if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
-    start();
+    console.log("connection successful!");
+    makeTable();
 });
 
-function start(){
+let makeTable = function(){
+    connection.query('SELECT * FROM products', function(err, res){
+        for(let i = 0; i < res.length; i++){
+            console.log(res[i].item_id + " || " + res[i].product_name + ' || ' + res[i].department_name + ' || ' + res[i].price + ' || ' + res[i].stock_quantity + '\n');
+        }
+        start(res);
+    })
+}
+let start = function(res){
     inquirer.prompt([
     {
         name: "start",
@@ -54,7 +62,7 @@ function shopping(choice){
                 console.log('Press numerical keys to buy');
                 return false;
             }
-        }, 
+        },
         {
             name: "quantity",
             type: "input",
