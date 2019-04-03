@@ -1,15 +1,21 @@
 //packages needed to run the file
 let mysql = require('mysql');
 let inquirer = require('inquirer');
+require('dotenv').config()
+var keys = require("./keys.js");
+let mySQL = new mySQL(keys.mySQL);
 
 let connection = mysql.createConnection({
     host: 'localhost',
 
     user:'root',
 
-    password: 'Kingme94',
-    database: "bamazon_db"
+    database: "bamazon_db";
+    
+    secret: process.env.mySQL_SECRET
+
 });
+
 
 connection.connect(function(err){
     if (err) throw err;
