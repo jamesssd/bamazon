@@ -8,8 +8,8 @@ User **must** download the packages need to use this program.
 Packages to download:
 1. mySQL package
 2. Inquirer package
-~~3. Keys.js
-4. dotenv~~
+~~3. Keys.js~~
+~~4. dotenv~~
 
 Once the user downloads the packages needed to start this program. User must open the terminal and type **node .bamazonCustomer.js** to start the program [see image below].
 
