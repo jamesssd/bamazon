@@ -23,7 +23,7 @@ function start(){
         name: "start",
         type: "rawlist",
         message: "Welcome, ready to shop?",
-        choices: ['YES', 'NO']
+        choices: ['YES', 'NO'],
     }
     ])
     .then(function(user){
@@ -35,10 +35,11 @@ function start(){
     });
 };
 
-function shopping(){
-    let query = 'SELECT item_id, product_name, department_name, price, stock_quantity';
+function shopping(choice){
+    let query = "SELECT item_id, product_name, department_name, price, stock_quantity";
     connection.query(query, function(err, res){
         if (err) throw err;
+        console.log("Item ID", + res[i].item_id + "Product Name" + res[i].product_name + "Price" + res[i].price + "Stock Quantity" + res[i].stock_quantity);
     });
     
     inquirer.prompt([
