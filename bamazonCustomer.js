@@ -1,13 +1,15 @@
 //packages needed to run the file
+require("dotenv").config();
 let mysql = require('mysql');
 let inquirer = require('inquirer');
-
+var keys = require("./keys.js");
 let connection = mysql.createConnection({
-    host: 'localhost',
+    host: process.env.DB_HOST,
 
-    user:'root',
+    user: process.env.DB_USER,
 
-    password: 'Kingme94',
+    password: process.env.DB_PASS,
+
     database: "bamazon_db"
 });
 
@@ -17,14 +19,7 @@ connection.connect(function(err){
     makeTable();
 });
 
-let makeTable = function(){
-    connection.query('SELECT * FROM products', function(err, res){
-        for(let i = 0; i < res.length; i++){
-            console.log(res[i].item_id + " || " + res[i].product_name + ' || ' + res[i].department_name + ' || ' + res[i].price + ' || ' + res[i].stock_quantity + '\n');
-        }
-        start(res);
-    })
-}
+
 let start = function(res){
     inquirer.prompt([
     {
@@ -37,44 +32,73 @@ let start = function(res){
     .then(function(user){
         if(user.start === 'YES') {
             shopping();
-        }else(user.start === 'NO') 
-        console.log("Come again!");
-        connection.end();
+        }else
+            console.log("Come again!");
+            connection.end();
     });
 };
 
-function shopping(choice){
+let makeTable = function(){
+    connection.query('SELECT * FROM products', function(err, res){
+        for(let i = 0; i < res.length; i++){
+            console.log(res[i].item_id + " || " + res[i].product_name + ' || ' + res[i].department_name + ' || ' + res[i].price + ' || ' + res[i].stock_quantity + '\n');
+        }
+        start(res);
+    })
+}
+function shopping(){
     let query = "SELECT item_id, product_name, department_name, price, stock_quantity";
     connection.query(query, function(err, res){
         if (err) throw err;
         console.log("Item ID", + res[i].item_id + "Product Name" + res[i].product_name + "Price" + res[i].price + "Stock Quantity" + res[i].stock_quantity);
     });
+
     
     inquirer.prompt([
         {
             name: "ID",
             type: "input",
             message: "What would you like to buy? *Please enter item ID",
-            validate: function(value){
-                if(isNaN(value) === false){
-                    return true;
+            validate: function(value) {
+                for(var i = 0; i < value.length; i++) {
+                    if(isNaN(parseInt(value[i]))) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
-                console.log('Press numerical keys to buy');
-                return false;
             }
-        },
-        {
-            name: "quantity",
-            type: "input",
-            message: "How many would you like to buy?",
-            validate: function(value){
-                if(isNaN(value) === false){
-                    return true;
-                }
-                return false;
-            }
+            // validate: function(value){
+            //     if(parseInt(value) === false){
+            //         return true;
+            //     }
+            //     console.log('Press numerical keys to buy');
+            //     return false;
+            // }
         }
-    ]).then(function(){
+        // {
+        //     name: "quantity",
+        //     type: "input",
+        //     message: "How many would you like to buy?",
+        //     validate: function(value) {
+        //         for(var i = 0; i < value.length; i++) {
+        //             if(isNaN(parseInt(value[i]))) {
+        //                 return false;
+        //             } else {
+        //                 return true;
+        //             }
+        //         }
+        //     }
+        //     // validate: function(value){
+        //     //     if(isNaN(value) === false){
+        //     //         return true;
+        //     //     }
+        //     //         return false;
+        //     // }
+        // }
+    ]).then(function(answer){
+        if (err) throw err;
+            console.log('===answer===', answer);
             let quantityNeed = answer.quantity;
             let idRequested = answer.ID;
             payForOrder(idRequested, quantityNeed);
@@ -86,7 +110,7 @@ function shopping(choice){
 function payForOrder(ID, amt){
     connection.query('SELECT * FROM products WHERE item_id= ' + ID, function(err, res){
         if(err){console.log(err)};
-        if(amt <= res[0].price * stock_quantity){
+        if(amt <= stock_quantity){
             let totalCost = res[0].price * amt;
             console.log("In Stock");
             console.log('Total for ' + amt + ' ' + res[0].product_name + 'is ' + totalCost + 'Thank you!');
