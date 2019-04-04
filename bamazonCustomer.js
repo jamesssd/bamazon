@@ -39,7 +39,7 @@ let start = function(res){
 };
 
 let makeTable = function(){
-    connection.query('SELECT * FROM products', function(err, res){
+    connection.query('SELECT * FROM products limit 10', function(err, res){
         for(let i = 0; i < res.length; i++){
             console.log(res[i].item_id + " || " + res[i].product_name + ' || ' + res[i].department_name + ' || ' + res[i].price + ' || ' + res[i].stock_quantity + '\n');
         }
@@ -47,18 +47,18 @@ let makeTable = function(){
     })
 }
 
-function shopping(choice) {
+function shopping() {
     inquirer
       .prompt([
         {
           name: 'ID',
           type: 'input',
-          message: 'What would you like to buy? *Please enter item ID',
+          message: 'What would you like to buy? ==Please enter item ID=== ',
           validate: function(value) {
             if (isNaN(value) === false) {
               return true;
             }
-            console.log('Press numerical keys to buy');
+            console.log('===Press numerical keys to buy===');
             return false;
           }
         },
@@ -70,18 +70,20 @@ function shopping(choice) {
             if (isNaN(value) === false) {
               return true;
             }
+            console.log(" ===Must input a number!===");
             return false;
+            
           }
         }
       ])
-      .then(function(answer) {
+      .then(function(choice) {
         let query =
           'SELECT item_id, product_name, department_name, price, stock_quantity';
         connection.query(query, function(err, res) {
           if (err) throw err;
           console.log(
             'Item ID',
-            +res[i].item_id +
+            + res[i].item_id +
               'Product Name' +
               res[i].product_name +
               'Price' +
