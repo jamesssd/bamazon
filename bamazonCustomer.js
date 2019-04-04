@@ -41,7 +41,7 @@ let start = function(res){
 let makeTable = function(){
     connection.query('SELECT * FROM products limit 10', function(err, res){
         for(let i = 0; i < res.length; i++){
-            console.log(res[i].item_id + " || " + res[i].product_name + ' || ' + res[i].department_name + ' || ' + res[i].price + ' || ' + res[i].stock_quantity + '\n');
+            console.table(res[i].item_id + " || " + res[i].product_name + ' || ' + res[i].department_name + ' || ' + res[i].price + ' || ' + res[i].stock_quantity + '\n');
         }
         start(res);
     })
@@ -75,7 +75,7 @@ function shopping() {
           }
         }
       ])
-      .then(function(choice) {
+      .then(function() {
         let query =
           'SELECT item_id, product_name, department_name, price, stock_quantity';
         connection.query(query, function(err, res) {
