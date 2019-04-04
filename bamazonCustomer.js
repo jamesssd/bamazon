@@ -71,8 +71,7 @@ function shopping() {
               return true;
             }
             console.log(" ===Must input a number!===");
-            return false;
-            
+            return false; 
           }
         }
       ])
