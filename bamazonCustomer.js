@@ -46,67 +46,55 @@ let makeTable = function(){
         start(res);
     })
 }
-function shopping(){
-    let query = "SELECT item_id, product_name, department_name, price, stock_quantity";
-    connection.query(query, function(err, res){
-        if (err) throw err;
-        console.log("Item ID", + res[i].item_id + "Product Name" + res[i].product_name + "Price" + res[i].price + "Stock Quantity" + res[i].stock_quantity);
-    });
 
-    
-    inquirer.prompt([
+function shopping(choice) {
+    inquirer
+      .prompt([
         {
-            name: "ID",
-            type: "input",
-            message: "What would you like to buy? *Please enter item ID",
-            validate: function(value) {
-                for(var i = 0; i < value.length; i++) {
-                    if(isNaN(parseInt(value[i]))) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
+          name: 'ID',
+          type: 'input',
+          message: 'What would you like to buy? *Please enter item ID',
+          validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
             }
-            // validate: function(value){
-            //     if(parseInt(value) === false){
-            //         return true;
-            //     }
-            //     console.log('Press numerical keys to buy');
-            //     return false;
-            // }
+            console.log('Press numerical keys to buy');
+            return false;
+          }
+        },
+        {
+          name: 'quantity',
+          type: 'input',
+          message: 'How many would you like to buy?',
+          validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
         }
-        // {
-        //     name: "quantity",
-        //     type: "input",
-        //     message: "How many would you like to buy?",
-        //     validate: function(value) {
-        //         for(var i = 0; i < value.length; i++) {
-        //             if(isNaN(parseInt(value[i]))) {
-        //                 return false;
-        //             } else {
-        //                 return true;
-        //             }
-        //         }
-        //     }
-        //     // validate: function(value){
-        //     //     if(isNaN(value) === false){
-        //     //         return true;
-        //     //     }
-        //     //         return false;
-        //     // }
-        // }
-    ]).then(function(answer){
-        if (err) throw err;
-            console.log('===answer===', answer);
-            let quantityNeed = answer.quantity;
-            let idRequested = answer.ID;
-            payForOrder(idRequested, quantityNeed);
-            }
-        ) 
-    
+      ])
+      .then(function(answer) {
+        let query =
+          'SELECT item_id, product_name, department_name, price, stock_quantity';
+        connection.query(query, function(err, res) {
+          if (err) throw err;
+          console.log(
+            'Item ID',
+            +res[i].item_id +
+              'Product Name' +
+              res[i].product_name +
+              'Price' +
+              res[i].price +
+              'Stock Quantity' +
+              res[i].stock_quantity
+          );
+        });
+        let quantityNeed = answer.quantity;
+        let idRequested = answer.ID;
+        payForOrder(idRequested, quantityNeed);
+      });
 }
-
 function payForOrder(ID, amt){
     connection.query('SELECT * FROM products WHERE item_id= ' + ID, function(err, res){
         if(err){console.log(err)};
@@ -120,4 +108,5 @@ function payForOrder(ID, amt){
 			console.log("Insufficient quantity, sorry we do not have enough " + res[0].product_name + "to complete your order.");
 		};
     })
+    
 }
