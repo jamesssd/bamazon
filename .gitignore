@@ -1,2 +1,5 @@
+node_modules
+.DS_Store
+bamazon_demo.mov
 .env
 keys.js
