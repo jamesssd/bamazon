@@ -39,7 +39,7 @@ The **Add New Product** option allows the user to enter details about a new prod
 
 To run the manager interface please follow the steps below:
 
-	git clone git@github.com:angrbrd/bamazon.git
+	git clone git@github.com:jamesssd/bamazon.git
 	cd bamazon
 	npm install
 	node bamazonManager.js
@@ -48,5 +48,5 @@ To run the manager interface please follow the steps below:
 
 You can download and watch the demo of the Bamazon customer and manager interfaces at the link below. Make sure to download the video, as opposed to watching it in your Browser, which will display a compressed version making the CLI output illegible.
 
-[Bamazon Demo]()
+[Bamazon Demo](https://drive.google.com/open?id=1aNsRidmMckZ3_tjo9VCwkT1a7VyiNZVY)
 
